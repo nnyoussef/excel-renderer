@@ -22,7 +22,7 @@ public class Utils {
     private static final String EXPORT_PATH = System.getProperty("user.dir");
 
     public static String getTestCss() throws IOException {
-        return IOUtils.toString(Objects.requireNonNull(ExcelFileGenerator.class.getClassLoader().getResourceAsStream("test.css")), StandardCharsets.UTF_8);
+        return IOUtils.toString(Objects.requireNonNull(ExcelFileRenderer.class.getClassLoader().getResourceAsStream("test.css")), StandardCharsets.UTF_8);
     }
 
     public static OutputStream getOutputStream(String fileName) throws IOException {

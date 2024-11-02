@@ -3,10 +3,12 @@ package lu.nyo.excel.renderer;
 import lu.nyo.excel.renderer.cursor.CursorPosition;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 
-public interface ExcelElementRenderer {
+public interface RenderingEngine<T> {
 
     void handle(CursorPosition cursorPosition,
-                Object elementToHandle,
+                T elementToHandle,
                 SXSSFSheet worksheet,
                 CellStyleProcessor cellStyleProcessor);
+
+    Class<T> getSelector();
 }

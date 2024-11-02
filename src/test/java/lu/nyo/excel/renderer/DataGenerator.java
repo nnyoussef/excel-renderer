@@ -12,8 +12,8 @@ import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.IntStream.range;
 
 public class DataGenerator {
-    private static final int ROWS_COUNT_IN_BODY_PER_TABLE = 100;
-    private static final int CELL_LIST_MULTIPLIER = 5;
+    private static final int ROWS_COUNT_IN_BODY_PER_TABLE = 1550;//1550
+    private static final int CELL_LIST_MULTIPLIER = 1000;
     private static final int TABLES_COUNT = 5;
 
     public static LinkedList<Object> simpleTableFormatData() {

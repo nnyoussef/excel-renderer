@@ -56,10 +56,9 @@ public class CursorPositionManager {
                         previous.next = newNode;
                     }
                     break;
-                } else {
-                    hold = visited;
-                    visited = visited.next;
                 }
+                hold = visited;
+                visited = visited.next;
             }
 
             if (visited == null) {
@@ -97,17 +96,12 @@ public class CursorPositionManager {
             final int firstColumn = cellAddresses.getFirstColumn();
             final int lastColumn = cellAddresses.getLastColumn();
             final int currentColumnIndex = closestUnmergedCellForRowAt;
-            if ((currentColumnIndex >= firstColumn & currentColumnIndex <= lastColumn)) {
+            if ((currentColumnIndex >= firstColumn && currentColumnIndex <= lastColumn)) {
                 closestUnmergedCellForRowAt = lastColumn + 1;
             }
             scanned = scanned.next;
         }
         cursorPosition.setCellPosition(closestUnmergedCellForRowAt);
-    }
-
-    public static void putCursorOnNextEmptyLine(CursorPosition cursorPosition) {
-        cursorPosition.incrementPosition(1, 0);
-        cursorPosition.setCellPosition(1);
     }
 
     private boolean isLessThan(int row, int col, int row1, int col1) {

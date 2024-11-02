@@ -8,6 +8,7 @@ public class CursorPosition {
     public int getRowPosition() {
         return rowPosition;
     }
+
     public int getCellPosition() {
         return cellPosition;
     }
@@ -16,15 +17,21 @@ public class CursorPosition {
         this.cellPosition = cellPosition;
     }
 
-    protected void incrementPosition(int rowIncrement,
+    public void incrementPosition(int rowIncrement,
                                   int colIncrement) {
         this.rowPosition += rowIncrement;
         this.cellPosition += colIncrement;
     }
 
-    protected void setPosition(int rowPosition,
+    public void setPosition(int rowPosition,
                             int cellPosition) {
         this.rowPosition = rowPosition;
         this.cellPosition = cellPosition;
     }
+
+    public void resetCellPositionOnNextLine() {
+        this.rowPosition += 1;
+        this.cellPosition = 1;
+    }
+
 }
