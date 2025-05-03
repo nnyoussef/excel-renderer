@@ -1,4 +1,4 @@
-package lu.nyo.excel.renderer.excel_element;
+package lu.nyo.excel.renderer.excelelement;
 
 import java.io.Serializable;
 import java.util.LinkedList;

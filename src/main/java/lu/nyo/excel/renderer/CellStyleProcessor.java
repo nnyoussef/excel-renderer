@@ -26,6 +26,7 @@ import java.util.Map;
 import static java.lang.Integer.parseInt;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.joining;
+import static lu.nyo.excel.renderer.constantes.CssConstantes.DEFAULT_CSS_PROPERTIES;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.poi.ss.usermodel.BorderStyle.NONE;
@@ -34,12 +35,10 @@ import static org.apache.poi.ss.usermodel.HorizontalAlignment.LEFT;
 import static org.apache.poi.ss.usermodel.HorizontalAlignment.RIGHT;
 import static org.apache.poi.ss.usermodel.VerticalAlignment.CENTER;
 
-public class CellStyleProcessor {
+public final class CellStyleProcessor {
 
     private final Map<String, XSSFCellStyle> cacheCellStyle = new HashMap<>(30);
-
     private final SXSSFWorkbook xssfWorkbook;
-
     private final Map<String, Map<String, String>> cssRuleDeclaration;
 
     private CellStyleProcessor(SXSSFWorkbook xssfWorkbook,
@@ -48,14 +47,12 @@ public class CellStyleProcessor {
         this.cssRuleDeclaration = cssRuleDeclaration;
     }
 
-    //-------------------------- Init One Time - Public Usage -------------------------------------------------
-    public static CellStyleProcessor init(String css,
-                                          SXSSFWorkbook xssfWorkbook) throws IOException {
+    //-------------------------- create One Time - Public Usage -------------------------------------------------
+    public static CellStyleProcessor create(String css,
+                                            SXSSFWorkbook xssfWorkbook) throws IOException {
         final Map<String, Map<String, String>> cssRuleDeclaration = new HashMap<>(30);
-
         final InputSource inputSource = new InputSource(new StringReader(css));
         final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
-
         final CSSStyleSheet styleSheet1 = parser.parseStyleSheet(inputSource, null, null);
 
         final CSSRuleList rules = styleSheet1.getCssRules();
@@ -85,13 +82,11 @@ public class CellStyleProcessor {
     public XSSFCellStyle createStyle(String css) {
         css = css.trim().strip();
 
-        if (cacheCellStyle.containsKey(css)) {
-            return cacheCellStyle.get(css);
-        }
+        if (cacheCellStyle.containsKey(css)) return cacheCellStyle.get(css);
 
         final XSSFCellStyle xssfCellStyle = (XSSFCellStyle) this.xssfWorkbook.createCellStyle();
 
-        final Map<String, String> cssProperties = this.cssRuleDeclaration.getOrDefault(css.trim().strip(), CssConstantes.DEFAULT_CSS_PROPERTIES);
+        final Map<String, String> cssProperties = this.cssRuleDeclaration.getOrDefault(css, DEFAULT_CSS_PROPERTIES);
 
         createBorderFromCssInstructions(cssProperties, xssfCellStyle);
         createAlignementFromCssInstruction(cssProperties, xssfCellStyle);

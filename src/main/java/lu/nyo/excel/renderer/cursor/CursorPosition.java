@@ -1,6 +1,6 @@
 package lu.nyo.excel.renderer.cursor;
 
-public class CursorPosition {
+public final class CursorPosition {
     private int rowPosition = 1;
 
     private int cellPosition = 1;
@@ -13,7 +13,7 @@ public class CursorPosition {
         return cellPosition;
     }
 
-    protected void setCellPosition(int cellPosition) {
+    void setCellPosition(int cellPosition) {
         this.cellPosition = cellPosition;
     }
 

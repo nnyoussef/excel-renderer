@@ -5,8 +5,8 @@ import lu.nyo.excel.renderer.CellStyleProcessor;
 import lu.nyo.excel.renderer.RenderingEngine;
 import lu.nyo.excel.renderer.cursor.CursorPosition;
 import lu.nyo.excel.renderer.cursor.CursorPositionManager;
-import lu.nyo.excel.renderer.excel_element.Row;
-import lu.nyo.excel.renderer.excel_element.Table;
+import lu.nyo.excel.renderer.excelelement.Row;
+import lu.nyo.excel.renderer.excelelement.Table;
 import lu.nyo.excel.renderer.utils.CellDataUtils;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellUtil;
@@ -17,27 +17,32 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static java.util.stream.Stream.empty;
 import static lu.nyo.excel.renderer.utils.SpanUtils.createSpan;
 
-public class TableRenderingEngine implements RenderingEngine<Table> {
-    private static final Map<String, String> CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY = new HashMap<>(50);
+public final class TableRenderingEngine implements RenderingEngine<Table> {
+    private static final Map<String, String> CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY = HashMap.newHashMap(30);
 
     static {
         CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.put("", "tbody .default");
     }
 
     @Override
-    public void handle(CursorPosition cursorPosition,
+    public Object getSelector() {
+        return Table.class;
+    }
+
+    @Override
+    public void render(CursorPosition cursorPosition,
                        Table table,
                        SXSSFSheet worksheet,
                        CellStyleProcessor cellStyleProcessor) {
 
-        AtomicReference<Stream<Row>> header = new AtomicReference<>(Stream.empty());
-        AtomicReference<Stream<Row>> body = new AtomicReference<>(Stream.empty());
-        AtomicReference<Stream<Row>> footer = new AtomicReference<>(Stream.empty());
+        Table.Holder header = new Table.Holder(empty());
+        Table.Holder body = new Table.Holder(empty());
+        Table.Holder footer = new Table.Holder(empty());
 
         table.tableContentInitializer(header, body, footer);
 
@@ -46,11 +51,6 @@ public class TableRenderingEngine implements RenderingEngine<Table> {
         render(worksheet, footer.get(), cursorPosition, "tfoot", cellStyleProcessor);
 
         cursorPosition.resetCellPositionOnNextLine();
-    }
-
-    @Override
-    public Class<Table> getSelector() {
-        return Table.class;
     }
 
     private void render(final SXSSFSheet worksheet,
@@ -88,7 +88,7 @@ public class TableRenderingEngine implements RenderingEngine<Table> {
     private String getCssClassFullName(String tableSection,
                                        String cellCss) {
         String css;
-        if ("tbody" == tableSection) {
+        if ("tbody".equals(tableSection)) {
             if (CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.containsKey(cellCss)) {
                 css = CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.get(cellCss);
             } else {
@@ -96,7 +96,7 @@ public class TableRenderingEngine implements RenderingEngine<Table> {
                 CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.put(cellCss, css);
             }
         } else {
-            if ("default" == cellCss)
+            if ("default".equals(cellCss))
                 css = tableSection + " .default";
             else {
                 css = tableSection + " ." + cellCss;

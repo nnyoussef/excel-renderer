@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 
 import java.util.Map;
 
-public class CssConstantes {
+public final class CssConstantes {
 
     public static final String BACKGROUND = "background";
 

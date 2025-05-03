@@ -4,7 +4,7 @@ import org.apache.poi.ss.util.CellRangeAddress;
 
 import java.util.LinkedList;
 
-public class CursorPositionManager {
+public final class CursorPositionManager {
 
     private static class CellRangeAddressNode {
         private CellRangeAddressNode next;

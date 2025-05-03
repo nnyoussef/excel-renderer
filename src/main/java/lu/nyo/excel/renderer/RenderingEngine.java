@@ -5,10 +5,10 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 
 public interface RenderingEngine<T> {
 
-    void handle(CursorPosition cursorPosition,
+    void render(CursorPosition cursorPosition,
                 T elementToHandle,
                 SXSSFSheet worksheet,
                 CellStyleProcessor cellStyleProcessor);
 
-    Class<T> getSelector();
+    Object getSelector();
 }

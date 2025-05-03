@@ -1,8 +1,8 @@
 package lu.nyo.excel.renderer;
 
-import lu.nyo.excel.renderer.excel_element.Cell;
-import lu.nyo.excel.renderer.excel_element.Row;
-import lu.nyo.excel.renderer.excel_element.Table;
+import lu.nyo.excel.renderer.excelelement.Cell;
+import lu.nyo.excel.renderer.excelelement.Row;
+import lu.nyo.excel.renderer.excelelement.Table;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -11,12 +11,11 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.IntStream.range;
 
-public class DataGenerator {
-    private static final int ROWS_COUNT_IN_BODY_PER_TABLE = 1550;//1550
+public class DataGenerator {static final int ROWS_COUNT_IN_BODY_PER_TABLE = 100;//1550
     private static final int CELL_LIST_MULTIPLIER = 1000;
     private static final int TABLES_COUNT = 5;
 
-    public static LinkedList<Object> simpleTableFormatData() {
+    public static LinkedList<Renderable> simpleTableFormatData() {
 
         final Cell year = new Cell().setData("Year").setColSpan(8).setCssClass("bleuFonce");
         final Cell empty = new Cell().setData("I am an Empty Cell").setRowSpan(2).setColSpan(2).setCssClass("bleuFonce");
@@ -48,7 +47,7 @@ public class DataGenerator {
         final Cell t5 = new Cell().setData("Total").setColSpan(2);
         footerRow.add(new Row().setCells(asList(t1, t2, t3, t4, t5, t1, t2, t3, t4)));
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         for (int i = 0; i < TABLES_COUNT; i++) {
             final Table table = (header, body1, footer) -> {
                 header.set(new LinkedList<>(headerRow).stream());
@@ -61,7 +60,7 @@ public class DataGenerator {
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionWithColSpanResolutionSimpleTableFormat() {
+    public static LinkedList<Renderable> rowSpanResolutionWithColSpanResolutionSimpleTableFormat() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2).setColSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -131,14 +130,14 @@ public class DataGenerator {
         header.add(row9);
         header.add(row10);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat1() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat1() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -225,14 +224,14 @@ public class DataGenerator {
         header.add(row9);
         header.add(row10);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat2() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat2() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -318,14 +317,14 @@ public class DataGenerator {
         header.add(row9);
         header.add(row10);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat3() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat3() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -412,14 +411,14 @@ public class DataGenerator {
         header.add(row9);
         header.add(row10);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat4() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat4() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -508,14 +507,14 @@ public class DataGenerator {
         header.add(row9);
         header.add(row10);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat5() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat5() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -611,14 +610,14 @@ public class DataGenerator {
         header.add(row10);
         header.add(row11);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat6() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat6() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
 
         Row row1 = new Row();
@@ -639,14 +638,14 @@ public class DataGenerator {
         header.add(row2);
         header.add(row2);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat7() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat7() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(5);
@@ -686,14 +685,14 @@ public class DataGenerator {
         header.add(row4);
         header.add(row4);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat8() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat8() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(5);
@@ -740,14 +739,14 @@ public class DataGenerator {
         header.add(row4);
         header.add(row5);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat9() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat9() {
         Cell empty4 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
 
         Row row1 = new Row();
@@ -779,14 +778,14 @@ public class DataGenerator {
         header.add(row2);
         header.add(row3);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat10() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat10() {
         Cell empty4 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
 
         Row row1 = new Row();
@@ -812,14 +811,14 @@ public class DataGenerator {
         header.add(row2);
         header.add(row3);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
         return tables;
     }
 
-    public static LinkedList<Object> rowSpanResolutionSimpleTableFormat() {
+    public static LinkedList<Renderable> rowSpanResolutionSimpleTableFormat() {
         Cell empty1 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(3);
         Cell empty2 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(2);
         Cell empty3 = new Cell().setData("\uD83D\uDE35").setCssClass("bleuFonce").setRowSpan(4);
@@ -905,7 +904,7 @@ public class DataGenerator {
         header.add(row9);
         header.add(row10);
 
-        LinkedList<Object> tables = new LinkedList<>();
+        LinkedList<Renderable> tables = new LinkedList<>();
         final Table table = (header1, body, footer) -> header1.set(header.stream());
         tables.add(table);
 
