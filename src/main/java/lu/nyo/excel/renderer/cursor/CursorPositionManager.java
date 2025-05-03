@@ -14,7 +14,7 @@ public final class CursorPositionManager {
 
     final CursorPosition cursorPosition;
 
-    CellRangeAddressNode first = null;
+    CellRangeAddressNode referenceNode = null;
 
     LinkedList<CellRangeAddress> newlyAddedCellsToCurrentSelectedRow = new LinkedList<>();
 
@@ -28,15 +28,15 @@ public final class CursorPositionManager {
         cursorPosition.incrementPosition(0, colSpan);
     }
 
-    private void integrateNewlyAddedCellsToTheCurrentLastNode() {
-        CellRangeAddressNode visited = first;
+    private void integrateNewlyAddedCellsToReferenceNode() {
+        CellRangeAddressNode visited = referenceNode;
         CellRangeAddressNode hold = null;
         for (CellRangeAddress cellAddresses : newlyAddedCellsToCurrentSelectedRow) {
 
-            if (first == null) {
-                first = new CellRangeAddressNode();
-                first.value = cellAddresses;
-                visited = first;
+            if (referenceNode == null) {
+                referenceNode = new CellRangeAddressNode();
+                referenceNode.value = cellAddresses;
+                visited = referenceNode;
                 continue;
             }
 
@@ -48,7 +48,7 @@ public final class CursorPositionManager {
 
                     if (visited.previous == null) {
                         visited.previous = newNode;
-                        first = newNode;
+                        referenceNode = newNode;
                     } else {
                         CellRangeAddressNode previous = visited.previous;
                         newNode.previous = previous;
@@ -72,11 +72,11 @@ public final class CursorPositionManager {
         newlyAddedCellsToCurrentSelectedRow.clear();
     }
 
-    public void setCursorToNextAvailablePosition() {
-        integrateNewlyAddedCellsToTheCurrentLastNode();
-        CellRangeAddressNode scanned = first;
-        int minRowPosition = first.value.getLastRow();
-        int minColPosition = first.value.getLastColumn();
+    public void setCursorToNextAvailablePositionOnNewRow() {
+        integrateNewlyAddedCellsToReferenceNode();
+        CellRangeAddressNode scanned = referenceNode;
+        int minRowPosition = referenceNode.value.getLastRow();
+        int minColPosition = referenceNode.value.getLastColumn();
         while (scanned != null) {
             if (isLessThan(scanned.value.getLastRow(), scanned.value.getFirstColumn(), minRowPosition, minColPosition)) {
                 minRowPosition = scanned.value.getLastRow();
@@ -89,7 +89,7 @@ public final class CursorPositionManager {
     }
 
     public void setCursorToNextAvailableUnmergedColOnCurrentRow() {
-        CellRangeAddressNode scanned = first;
+        CellRangeAddressNode scanned = referenceNode;
         int closestUnmergedCellForRowAt = cursorPosition.getCellPosition();
         while (scanned != null) {
             CellRangeAddress cellAddresses = scanned.value;
@@ -120,13 +120,13 @@ public final class CursorPositionManager {
         if (toRemove.previous != null) {
             toRemove.previous.next = toRemove.next;
         } else {
-            first = toRemove.next;
+            referenceNode = toRemove.next;
         }
         return toRemove.next;
     }
 
     private void clean() {
-        CellRangeAddressNode scanned = first;
+        CellRangeAddressNode scanned = referenceNode;
         while (scanned != null) {
             if (cursorPosition.getRowPosition() > scanned.value.getLastRow()) {
                 scanned = removeNodeFromChain(scanned);

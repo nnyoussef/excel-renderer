@@ -2,7 +2,6 @@ package lu.nyo.excel.renderer.utils;
 
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.xssf.streaming.SXSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 
 import static java.util.Optional.ofNullable;
 import static org.apache.commons.lang3.StringUtils.isNumericSpace;

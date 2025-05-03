@@ -15,15 +15,15 @@ import org.apache.poi.xssf.streaming.SXSSFRow;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static java.util.HashMap.newHashMap;
 import static java.util.stream.Stream.empty;
 import static lu.nyo.excel.renderer.utils.SpanUtils.createSpan;
 
 public final class TableRenderingEngine implements RenderingEngine<Table> {
-    private static final Map<String, String> CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY = HashMap.newHashMap(30);
+    private static final Map<String, String> CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY = newHashMap(30);
 
     static {
         CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.put("", "tbody .default");
@@ -81,7 +81,7 @@ public final class TableRenderingEngine implements RenderingEngine<Table> {
                 resolveStyleForMergedCell(cellAddressesAfterMerging, xssfCellStyle, worksheet);
                 xssfCell.setCellStyle(xssfCellStyle);
             });
-            cursorPositionManager.setCursorToNextAvailablePosition();
+            cursorPositionManager.setCursorToNextAvailablePositionOnNewRow();
         });
     }
 

@@ -21,9 +21,9 @@ public final class ExcelFileRenderer {
         throw new IllegalAccessException();
     }
 
-    private static final Map<Object, RenderingEngine<?>> EXCEL_RENDERING_ENGINES = getExcelElementRendererLookup();
+    private static final Map<Object, RenderingEngine> EXCEL_RENDERING_ENGINES = getExcelElementRendererLookup();
 
-    private static Map getExcelElementRendererLookup() {
+    private static Map<Object, RenderingEngine> getExcelElementRendererLookup() {
         return ServiceLoader.load(RenderingEngine.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
