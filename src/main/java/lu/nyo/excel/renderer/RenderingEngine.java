@@ -3,7 +3,7 @@ package lu.nyo.excel.renderer;
 import lu.nyo.excel.renderer.cursor.CursorPosition;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 
-public interface RenderingEngine<T> {
+public interface RenderingEngine<T extends Renderable> {
 
     void render(CursorPosition cursorPosition,
                 T elementToHandle,

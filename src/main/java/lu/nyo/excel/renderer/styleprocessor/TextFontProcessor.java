@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 import static java.util.Optional.ofNullable;
 import static lu.nyo.excel.renderer.utils.ColorUtils.getXSSFColorFromRgb;
 
-public class TextFontProcessor implements BiConsumer<Map<String, String>, XSSFCellStyle> {
+public final class TextFontProcessor implements BiConsumer<Map<String, String>, XSSFCellStyle> {
 
     private final Supplier<XSSFFont> xssfFontSupplier;
 
@@ -21,7 +21,8 @@ public class TextFontProcessor implements BiConsumer<Map<String, String>, XSSFCe
     }
 
     @Override
-    public void accept(Map<String, String> instructions, XSSFCellStyle xssfCellStyle) {
+    public void accept(Map<String, String> instructions,
+                       XSSFCellStyle xssfCellStyle) {
         final XSSFColor textColor = getXSSFColorFromRgb(instructions.get(CssConstantes.COLOR));
         boolean isBold = isBold(instructions);
 

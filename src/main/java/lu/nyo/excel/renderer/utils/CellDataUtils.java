@@ -8,7 +8,8 @@ import static org.apache.commons.lang3.StringUtils.isNumericSpace;
 
 public final class CellDataUtils {
 
-    private CellDataUtils() {
+    private CellDataUtils() throws InstantiationException {
+        throw new InstantiationException();
     }
 
     public static void setData(Object data,

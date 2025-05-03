@@ -17,8 +17,8 @@ import static java.util.function.Function.identity;
 
 public final class ExcelFileRenderer {
 
-    private ExcelFileRenderer() throws IllegalAccessException {
-        throw new IllegalAccessException();
+    private ExcelFileRenderer() throws InstantiationException {
+        throw new InstantiationException();
     }
 
     private static final Map<Object, RenderingEngine> EXCEL_RENDERING_ENGINES = getExcelElementRendererLookup();

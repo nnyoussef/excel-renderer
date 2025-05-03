@@ -13,7 +13,8 @@ import static org.apache.poi.ss.usermodel.HorizontalAlignment.LEFT;
 import static org.apache.poi.ss.usermodel.HorizontalAlignment.RIGHT;
 import static org.apache.poi.ss.usermodel.VerticalAlignment.CENTER;
 
-public class TextAlignmentProcessor implements BiConsumer<Map<String, String>, XSSFCellStyle> {
+public final class TextAlignmentProcessor implements BiConsumer<Map<String, String>, XSSFCellStyle> {
+
     @Override
     public void accept(Map<String, String> cssInstruction, XSSFCellStyle xssfCellStyle) {
         final String textAlignment = cssInstruction.get(CssConstantes.TEXT_ALIGN);

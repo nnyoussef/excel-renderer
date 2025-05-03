@@ -74,9 +74,9 @@ public final class CellStyleProcessor {
 
         if (cacheCellStyle.containsKey(css)) return cacheCellStyle.get(css);
 
-        final XSSFCellStyle xssfCellStyle = (XSSFCellStyle) this.xssfWorkbook.createCellStyle();
+        final XSSFCellStyle xssfCellStyle = (XSSFCellStyle) xssfWorkbook.createCellStyle();
 
-        final Map<String, String> cssProperties = this.cssRuleDeclaration.getOrDefault(css, DEFAULT_CSS_PROPERTIES);
+        final Map<String, String> cssProperties = cssRuleDeclaration.getOrDefault(css, DEFAULT_CSS_PROPERTIES);
 
         styleProcessingChain.accept(cssProperties, xssfCellStyle);
         cacheCellStyle.put(css, xssfCellStyle);

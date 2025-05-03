@@ -14,7 +14,8 @@ import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 import static org.apache.poi.ss.usermodel.BorderStyle.NONE;
 
-public class BorderProcessor implements BiConsumer<Map<String, String>, XSSFCellStyle> {
+public final class BorderProcessor implements BiConsumer<Map<String, String>, XSSFCellStyle> {
+
     @Override
     public void accept(Map<String, String> cssProperties, XSSFCellStyle xssfCellStyle) {
         cssProperties.forEach((prop, value) -> {

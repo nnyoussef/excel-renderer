@@ -6,7 +6,8 @@ import org.apache.poi.xssf.streaming.SXSSFSheet;
 
 public final class SpanUtils {
 
-    private SpanUtils() {
+    private SpanUtils() throws InstantiationException {
+        throw new InstantiationException();
     }
 
     public static CellRangeAddress createSpan(SXSSFSheet sheet,
