@@ -29,9 +29,4 @@ public final class CursorPosition {
         this.cellPosition = cellPosition;
     }
 
-    public void resetCellPositionOnNextLine() {
-        this.rowPosition += 1;
-        this.cellPosition = 1;
-    }
-
 }

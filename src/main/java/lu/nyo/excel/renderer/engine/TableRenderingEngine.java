@@ -49,8 +49,6 @@ public final class TableRenderingEngine implements RenderingEngine<Table> {
         render(worksheet, header.get(), cursorPosition, "thead", cellStyleProcessor);
         render(worksheet, body.get(), cursorPosition, "tbody", cellStyleProcessor);
         render(worksheet, footer.get(), cursorPosition, "tfoot", cellStyleProcessor);
-
-        cursorPosition.resetCellPositionOnNextLine();
     }
 
     private void render(final SXSSFSheet worksheet,
