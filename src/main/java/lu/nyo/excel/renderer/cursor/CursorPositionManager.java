@@ -14,9 +14,12 @@ public final class CursorPositionManager {
 
     final CursorPosition cursorPosition;
 
-    CellRangeAddressNode referenceNode = null;
+    //is used as starting point from where we will calculate cell positioning. The idea of it is to provide an optimal start point for scanning
+    //it's the head of a linked list, with elements of higher rowspan that the current cursor because they may represent a late collision
+    //it guarantees that the cursor can see the blocked cells
+    CellRangeAddressNode cursorVisibleBlockedCells = null;
 
-    LinkedList<CellRangeAddress> newlyAddedCellsToCurrentSelectedRow = new LinkedList<>();
+    final LinkedList<CellRangeAddress> newlyAddedCellsToCurrentSelectedRow = new LinkedList<>();
 
     public CursorPositionManager(CursorPosition cursorPosition) {
         this.cursorPosition = cursorPosition;
@@ -28,15 +31,14 @@ public final class CursorPositionManager {
         cursorPosition.incrementPosition(0, colSpan);
     }
 
-    private void integrateNewlyAddedCellsToReferenceNode() {
-        CellRangeAddressNode visited = referenceNode;
-        CellRangeAddressNode hold = null;
-        for (CellRangeAddress cellAddresses : newlyAddedCellsToCurrentSelectedRow) {
+    private void flushNewlyAddedCellsToBlockedCellsLinkedList() {
 
-            if (referenceNode == null) {
-                referenceNode = new CellRangeAddressNode();
-                referenceNode.value = cellAddresses;
-                visited = referenceNode;
+        for (CellRangeAddress cellAddresses : newlyAddedCellsToCurrentSelectedRow) {
+            CellRangeAddressNode visited = cursorVisibleBlockedCells;
+            CellRangeAddressNode hold = null;
+            if (cursorVisibleBlockedCells == null) {
+                cursorVisibleBlockedCells = new CellRangeAddressNode();
+                cursorVisibleBlockedCells.value = cellAddresses;
                 continue;
             }
 
@@ -48,7 +50,7 @@ public final class CursorPositionManager {
 
                     if (visited.previous == null) {
                         visited.previous = newNode;
-                        referenceNode = newNode;
+                        cursorVisibleBlockedCells = newNode;
                     } else {
                         CellRangeAddressNode previous = visited.previous;
                         newNode.previous = previous;
@@ -72,11 +74,11 @@ public final class CursorPositionManager {
         newlyAddedCellsToCurrentSelectedRow.clear();
     }
 
-    public void setCursorToNextAvailablePositionOnNewRow() {
-        integrateNewlyAddedCellsToReferenceNode();
-        CellRangeAddressNode scanned = referenceNode;
-        int minRowPosition = referenceNode.value.getLastRow();
-        int minColPosition = referenceNode.value.getLastColumn();
+    public void setCursorToNextUnblockedPositionOnNewRow() {
+        flushNewlyAddedCellsToBlockedCellsLinkedList();
+        CellRangeAddressNode scanned = cursorVisibleBlockedCells;
+        int minRowPosition = cursorVisibleBlockedCells.value.getLastRow();
+        int minColPosition = cursorVisibleBlockedCells.value.getLastColumn();
         while (scanned != null) {
             if (isLessThan(scanned.value.getLastRow(), scanned.value.getFirstColumn(), minRowPosition, minColPosition)) {
                 minRowPosition = scanned.value.getLastRow();
@@ -88,8 +90,8 @@ public final class CursorPositionManager {
         clean();
     }
 
-    public void setCursorToNextAvailableUnmergedColOnCurrentRow() {
-        CellRangeAddressNode scanned = referenceNode;
+    public void setCursorToNextUnmergedColOnCurrentRow() {
+        CellRangeAddressNode scanned = cursorVisibleBlockedCells;
         int closestUnmergedCellForRowAt = cursorPosition.getCellPosition();
         while (scanned != null) {
             CellRangeAddress cellAddresses = scanned.value;
@@ -105,28 +107,20 @@ public final class CursorPositionManager {
     }
 
     private boolean isLessThan(int row, int col, int row1, int col1) {
-        if (row < row1)
-            return true;
-        else if (row == row1) {
-            return col < col1;
-        } else {
-            return false;
-        }
+        if (row < row1) return true;
+        else if (row == row1) return col < col1;
+        return false;
     }
 
     private CellRangeAddressNode removeNodeFromChain(CellRangeAddressNode toRemove) {
-        if (toRemove.next != null)
-            toRemove.next.previous = toRemove.previous;
-        if (toRemove.previous != null) {
-            toRemove.previous.next = toRemove.next;
-        } else {
-            referenceNode = toRemove.next;
-        }
+        if (toRemove.next != null) toRemove.next.previous = toRemove.previous;
+        if (toRemove.previous != null) toRemove.previous.next = toRemove.next;
+        else cursorVisibleBlockedCells = toRemove.next;
         return toRemove.next;
     }
 
     private void clean() {
-        CellRangeAddressNode scanned = referenceNode;
+        CellRangeAddressNode scanned = cursorVisibleBlockedCells;
         while (scanned != null) {
             if (cursorPosition.getRowPosition() > scanned.value.getLastRow()) {
                 scanned = removeNodeFromChain(scanned);

@@ -45,9 +45,9 @@ public final class CellStyleProcessor {
         final Map<String, Map<String, String>> cssRuleDeclaration = HashMap.newHashMap(30);
         final InputSource inputSource = new InputSource(new StringReader(css));
         final CSSOMParser parser = new CSSOMParser(new SACParserCSS3());
-        final CSSStyleSheet styleSheet1 = parser.parseStyleSheet(inputSource, null, null);
+        final CSSStyleSheet styleSheet = parser.parseStyleSheet(inputSource, null, null);
 
-        final CSSRuleList rules = styleSheet1.getCssRules();
+        final CSSRuleList rules = styleSheet.getCssRules();
         for (int i = 0; i < rules.getLength(); i++) {
             final CSSRule rule = rules.item(i);
 

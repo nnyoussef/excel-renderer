@@ -60,13 +60,13 @@ public final class TableRenderingEngine implements RenderingEngine<Table> {
         final CursorPositionManager cursorPositionManager = new CursorPositionManager(cursorPosition);
 
         rows.forEach(row -> {
-
             row.getCells().forEach(cell -> {
+
                 final int rowSpan = cell.getRowSpan();
                 final int colSpan = cell.getColSpan();
                 final String css = getCssClassFullName(tableSection, cell.getCssClass());
 
-                cursorPositionManager.setCursorToNextAvailableUnmergedColOnCurrentRow();
+                cursorPositionManager.setCursorToNextUnmergedColOnCurrentRow();
 
                 final SXSSFRow xssfRow = (SXSSFRow) CellUtil.getRow(cursorPosition.getRowPosition(), worksheet);
                 final SXSSFCell xssfCell = xssfRow.createCell(cursorPosition.getCellPosition());
@@ -79,28 +79,21 @@ public final class TableRenderingEngine implements RenderingEngine<Table> {
                 resolveStyleForMergedCell(cellAddressesAfterMerging, xssfCellStyle, worksheet);
                 xssfCell.setCellStyle(xssfCellStyle);
             });
-            cursorPositionManager.setCursorToNextAvailablePositionOnNewRow();
+            cursorPositionManager.setCursorToNextUnblockedPositionOnNewRow();
         });
     }
 
     private String getCssClassFullName(String tableSection,
                                        String cellCss) {
-        String css;
         if ("tbody".equals(tableSection)) {
-            if (CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.containsKey(cellCss)) {
-                css = CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.get(cellCss);
-            } else {
-                css = tableSection + " ." + cellCss;
-                CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY.put(cellCss, css);
-            }
-        } else {
-            if ("default".equals(cellCss))
-                css = tableSection + " .default";
-            else {
-                css = tableSection + " ." + cellCss;
-            }
+            return CELL_CSS_FULL_CLASS_NAMES_CACHE_TBODY
+                    .computeIfAbsent(
+                            cellCss,
+                            css -> tableSection + " ." + css
+                    );
         }
-        return css;
+
+        return tableSection + " ." + cellCss;
     }
 
     private void resolveStyleForMergedCell(CellRangeAddress cellRangeAddress,
